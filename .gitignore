@@ -19,3 +19,9 @@ feles-engine
 
 # Goland
 .idea
+
+# shared object output dir
+output_library_dir/*
+
+# not ignore if exist .gitkeep
+!.gitkeep
