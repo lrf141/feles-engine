@@ -1,6 +1,6 @@
 package main
 
-// #cgo LDFLAGS: -L./ -lfeles
+// #cgo LDFLAGS: -L./output_library_dir -lfeles
 // #include<stdio.h>
 // #include<feles.h>
 import "C"
