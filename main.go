@@ -1,5 +1,9 @@
 package main
 
+// #cgo LDFLAGS: -L./ -lfeles
+// #include<stdio.h>
+// #include<feles.h>
+import "C"
 import (
         "github.com/gorilla/mux"
         "io"
@@ -8,6 +12,8 @@ import (
 )
 
 func main() {
+
+        C.echo()
 
         srv := mux.NewRouter()
 
