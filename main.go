@@ -12,7 +12,6 @@ import (
 func main() {
 
         C.echo()
-        C.clone_ns()
         C.create_namespace()
 
         err := initDaemon()
