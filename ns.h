@@ -5,3 +5,4 @@
 #include<sys/wait.h>
 
 extern void clone_ns();
+extern void create_namespace();
