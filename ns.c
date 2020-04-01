@@ -11,7 +11,7 @@
 #define STACK_SIZE 1024 * 1024
 #define errExit(msg) do { perror(msg); exit(EXIT_FAILURE); } while(0);
 
-const int namespaces = CLONE_NEWUTS | SIGCHLD;
+const int namespaces = CLONE_NEWUTS | CLONE_NEWPID | SIGCHLD;
 static char child_stack[STACK_SIZE];
 
 static int initNamespace(void *args) {
@@ -28,6 +28,8 @@ static int initNamespace(void *args) {
 		errExit("uname");
 
 	printf("uts nodename in child: %s\n", uts.nodename);
+	printf("Child PID: %ld\n", (long)getpid());
+	printf("Parent PID: %ld\n", (long)getppid());
 	sleep(200);
 
 	free(hostname);
@@ -47,6 +49,9 @@ void create_namespace() {
 	if (uname(&uts) == -1)
     	errExit("uname");
     printf("uts.nodename in parent: %s\n", uts.nodename);
+
+    printf("My PID: %ld\n", (long)getpid());
+    printf("Container PID: %ld\n", (long)child_pid);
 
     if (waitpid(child_pid, NULL, 0) == -1)
     	errExit("waitpid");
