@@ -6,12 +6,13 @@
 #include <string.h>
 #include <sys/wait.h>
 #include <sys/utsname.h>
+#include <sys/mount.h>
 #include "util.h"
 
 #define STACK_SIZE 1024 * 1024
 #define errExit(msg) do { perror(msg); exit(EXIT_FAILURE); } while(0);
 
-const int namespaces = CLONE_NEWUTS | CLONE_NEWPID | SIGCHLD;
+const int namespaces = CLONE_NEWUTS | CLONE_NEWPID | CLONE_NEWNS |SIGCHLD;
 static char child_stack[STACK_SIZE];
 
 static int initNamespace(void *args) {
@@ -21,6 +22,7 @@ static int initNamespace(void *args) {
 	char *hostname = (char *)malloc(sizeof(char) * UUID_LEN);
 	getUuid(hostname);
 
+	// set uts
 	if (sethostname(hostname, strlen(hostname)) == -1)
 		errExit("sethostname error");
 
@@ -28,8 +30,21 @@ static int initNamespace(void *args) {
 		errExit("uname");
 
 	printf("uts nodename in child: %s\n", uts.nodename);
+
+	// mount dir
+	if (mount("/tmp/hoge", "./", "ext4", 0, NULL) == -1) {
+		errExit("dir mount error")
+	}
+
+	char *newargv[] = { NULL, "/tmp/hoge", NULL, NULL };
+    char *newenviron[] = { NULL };
+
+	execve("ls", newargv, newenviron);
+
+	// check split pid
 	printf("Child PID: %ld\n", (long)getpid());
 	printf("Parent PID: %ld\n", (long)getppid());
+
 	sleep(200);
 
 	free(hostname);
