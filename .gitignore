@@ -23,5 +23,8 @@ feles-engine
 # shared object output dir
 output_library_dir/*
 
+# container test data
+test/*
+
 # not ignore if exist .gitkeep
 !.gitkeep
