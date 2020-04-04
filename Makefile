@@ -20,6 +20,13 @@ $(BUILD_DAEMON):
 $(BUILD_LIB):
 	$(CC) $(SHARED) $(C_TARGET) -o $(OUTPUT_DIR)/$(LIB_NAME) $(LDFLAGS)
 
+testdata:
+	mkdir test/container
+	cp -r /bin /lib /lib64 test/container
+
+clean_testdata:
+	rm -rf test/container
+
 install:
 	$(INSTALL) $(BINARY) $(INSTALL_DIR)
 
