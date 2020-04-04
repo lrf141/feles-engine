@@ -31,16 +31,6 @@ static int initNamespace(void *args) {
 
 	printf("uts nodename in child: %s\n", uts.nodename);
 
-	// mount dir
-	if (mount("/tmp/hoge", "./", "ext4", 0, NULL) == -1) {
-		errExit("dir mount error")
-	}
-
-	char *newargv[] = { NULL, "/tmp/hoge", NULL, NULL };
-    char *newenviron[] = { NULL };
-
-	execve("ls", newargv, newenviron);
-
 	// check split pid
 	printf("Child PID: %ld\n", (long)getpid());
 	printf("Parent PID: %ld\n", (long)getppid());
