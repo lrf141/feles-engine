@@ -12,7 +12,7 @@
 #define STACK_SIZE 1024 * 1024
 #define errExit(msg) do { perror(msg); exit(EXIT_FAILURE); } while(0);
 
-const int namespaces = CLONE_NEWUTS | CLONE_NEWPID | CLONE_NEWNS |SIGCHLD;
+const int namespaces = CLONE_NEWUTS | CLONE_NEWPID | CLONE_NEWNS | CLONE_NEWUSER | SIGCHLD;
 static char child_stack[STACK_SIZE];
 
 static int initNamespace(void *args) {
@@ -39,6 +39,13 @@ static int initNamespace(void *args) {
 	if (chroot("test/container") == -1)
 		errExit("chroot error");
 
+	if (setuid(0) != -1)
+    	errExit("setuid error");
+
+	// check UID, GID
+	printf("Container UID: %ld\n", (long)geteuid());
+	printf("Container GID: %ld\n", (long)getegid());
+
 	//exec command
 	FILE *fp;
 	char buf[256];
@@ -50,7 +57,7 @@ static int initNamespace(void *args) {
 	}
 	(void)pclose(fp);
 
-	sleep(200);
+	sleep(10);
 
 	free(hostname);
 	return 0;
@@ -72,6 +79,9 @@ void create_namespace() {
 
     printf("My PID: %ld\n", (long)getpid());
     printf("Container PID: %ld\n", (long)child_pid);
+
+    printf("UID: %ld\n", (long)geteuid());
+    printf("GID: %ld\n", (long)getegid());
 
     if (waitpid(child_pid, NULL, 0) == -1)
     	errExit("waitpid");
