@@ -35,6 +35,21 @@ static int initNamespace(void *args) {
 	printf("Child PID: %ld\n", (long)getpid());
 	printf("Parent PID: %ld\n", (long)getppid());
 
+	// change root dir
+	if (chroot("test/container") == -1)
+		errExit("chroot error");
+
+	//exec command
+	FILE *fp;
+	char buf[256];
+	char *cmd = "/bin/ls /";
+	if ((fp = popen(cmd, "r")) == NULL)
+		errExit("popen");
+	while (fgets(buf, 256, fp) != NULL) {
+		(void)fputs(buf, stdout);
+	}
+	(void)pclose(fp);
+
 	sleep(200);
 
 	free(hostname);

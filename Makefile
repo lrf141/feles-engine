@@ -18,7 +18,7 @@ $(BUILD_DAEMON):
 	$(GO) build .
 
 $(BUILD_LIB):
-	$(CC) $(SHARED) $(C_TARGET) -o $(OUTPUT_DIR)/$(LIB_NAME) $(LDFLAGS)
+	$(CC) $(SHARED) $(C_TARGET) -o $(OUTPUT_DIR)/$(LIB_NAME) $(LDFLAGS) -fPIC
 
 testdata:
 	mkdir test/container
