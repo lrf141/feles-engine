@@ -12,7 +12,7 @@
 #define STACK_SIZE 1024 * 1024
 #define errExit(msg) do { printf(msg); exit(EXIT_FAILURE); } while(0);
 
-const int namespaces = CLONE_NEWUTS | CLONE_NEWPID | CLONE_NEWNS | CLONE_NEWNET | SIGCHLD;
+const int namespaces = CLONE_NEWUTS | CLONE_NEWPID | CLONE_NEWNS | CLONE_NEWNET | CLONE_NEWIPC | SIGCHLD;
 static char child_stack[STACK_SIZE];
 
 static int initNamespace(void *args) {
