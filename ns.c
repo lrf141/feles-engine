@@ -10,14 +10,13 @@
 #include "util.h"
 
 #define STACK_SIZE 1024 * 1024
-#define errExit(msg) do { perror(msg); exit(EXIT_FAILURE); } while(0);
+#define errExit(msg) do { printf(msg); exit(EXIT_FAILURE); } while(0);
 
-const int namespaces = CLONE_NEWUTS | CLONE_NEWPID | CLONE_NEWNS | CLONE_NEWUSER | SIGCHLD;
+const int namespaces = CLONE_NEWUTS | CLONE_NEWPID | CLONE_NEWNS | CLONE_NEWNET | SIGCHLD;
 static char child_stack[STACK_SIZE];
 
 static int initNamespace(void *args) {
 	struct utsname uts;
-
 
 	char *hostname = (char *)malloc(sizeof(char) * UUID_LEN);
 	getUuid(hostname);
@@ -39,7 +38,7 @@ static int initNamespace(void *args) {
 	if (chroot("test/container") == -1)
 		errExit("chroot error");
 
-	if (setuid(0) != -1)
+	if (setuid(0) != 0)
     	errExit("setuid error");
 
 	// check UID, GID
