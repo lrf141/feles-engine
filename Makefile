@@ -23,7 +23,10 @@ $(BUILD_LIB):
 
 testdata:
 	mkdir test/container
-	cp -r /bin /lib /lib64 test/container
+	cp -r /bin test/container
+	cp -r /lib test/container
+	cp -r /lib64 test/container
+	cp -r /sbin test/container
 
 clean_testdata:
 	rm -rf test/container
