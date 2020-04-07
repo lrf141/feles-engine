@@ -73,18 +73,18 @@ void create_namespace() {
 	sleep(1);
 
 	if (uname(&uts) == -1)
-    	errExit("uname");
-    printf("uts.nodename in parent: %s\n", uts.nodename);
+    		errExit("uname");
+	printf("uts.nodename in parent: %s\n", uts.nodename);
 
-    printf("My PID: %ld\n", (long)getpid());
-    printf("Container PID: %ld\n", (long)child_pid);
+   	printf("My PID: %ld\n", (long)getpid());
+    	printf("Container PID: %ld\n", (long)child_pid);
 
-    printf("UID: %ld\n", (long)geteuid());
-    printf("GID: %ld\n", (long)getegid());
+    	printf("UID: %ld\n", (long)geteuid());
+    	printf("GID: %ld\n", (long)getegid());
 
-    if (waitpid(child_pid, NULL, 0) == -1)
-    	errExit("waitpid");
-    printf("child has terminated\n");
+    	if (waitpid(child_pid, NULL, 0) == -1)
+    		errExit("waitpid");
+    	printf("child has terminated\n");
 
-    printf("clone() returned %ld\n", (long) child_pid);
+    	printf("clone() returned %ld\n", (long) child_pid);
 }
