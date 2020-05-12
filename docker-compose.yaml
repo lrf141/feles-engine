@@ -6,3 +6,7 @@ services:
     tty: true
     volumes:
       - ./:/src
+    cap_add:
+      - CAP_SYS_ADMIN
+    security_opt:
+      - seccomp:unconfined
