@@ -1,0 +1,8 @@
+version: '3'
+services:
+  ubuntu:
+    container_name: sysdev
+    build: ./docker
+    tty: true
+    volumes:
+      - ./:/src
